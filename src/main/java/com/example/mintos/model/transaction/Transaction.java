@@ -1,4 +1,4 @@
-package com.example.mintos.transaction;
+package com.example.mintos.model.transaction;
 
 import jakarta.persistence.*;
 import lombok.*;

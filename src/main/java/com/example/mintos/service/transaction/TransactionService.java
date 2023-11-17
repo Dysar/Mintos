@@ -1,7 +1,7 @@
-package com.example.mintos.transaction;
+package com.example.mintos.service.transaction;
 
-import com.example.mintos.account.Account;
-import com.example.mintos.account.AccountRepository;
+import com.example.mintos.model.transaction.Transaction;
+import com.example.mintos.repository.transaction.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

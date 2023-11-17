@@ -1,12 +1,12 @@
-package com.example.mintos.account;
+package com.example.mintos.model.account;
 
+import com.example.mintos.dto.model.account.AccountDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
 @Getter
