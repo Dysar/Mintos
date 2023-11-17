@@ -4,6 +4,7 @@ package com.example.mintos.account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,8 +16,16 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping
-    public List<Account> findAll() {
-        return accountService.findAll();
+    public Response<List<AccountDTO>> findAll() {
+        Response<List<AccountDTO>> response = new Response<>();
+        List<Account> accounts = accountService.findAll();
+        List<AccountDTO> accountDTO = new ArrayList<>();
+
+        accounts.forEach(t -> accountDTO.add(t.convertEntityToDTO()));
+
+
+        response.setData(accountDTO);
+        return response;
     }
 
     @GetMapping("/{id}")

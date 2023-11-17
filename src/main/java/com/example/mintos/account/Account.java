@@ -1,21 +1,35 @@
 package com.example.mintos.account;
 
 import jakarta.persistence.*;
+import lombok.*;
+import org.modelmapper.ModelMapper;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-public class Account {
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "account")
+public class Account implements Serializable {
+
+    private static final long serialVersionUID = -6762432601286928295L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "client_id")
     private Long clientID;
-//    private LocalDate publishDate;
+    @Column(name = "balance")
+    private BigDecimal balance;
+    @Column(name = "currency_code")
+    private String currencyCode;
 
-    // for JPA only, no use
-    public Account() {
+    public AccountDTO convertEntityToDTO() {
+        return new ModelMapper().map(this, AccountDTO.class);
     }
-
-    // getters, setters and constructor
 }
