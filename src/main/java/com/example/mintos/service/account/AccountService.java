@@ -18,17 +18,6 @@ public class AccountService {
         return repository.findAll();
     }
 
-    public Optional<Account> findById(Long id) {
-        return repository.findById(id);
-    }
-
-    public Account save(Account book) {
-        return repository.save(book);
-    }
-
-    public void deleteById(Long id) {
-        repository.deleteById(id);
-    }
 
     public List<Account> findByClientIDEquals(Long clientID) {
         return repository.findByClientIDEquals(clientID);

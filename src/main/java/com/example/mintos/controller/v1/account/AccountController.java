@@ -27,14 +27,8 @@ public class AccountController {
 
         accounts.forEach(t -> accountDTO.add(t.convertEntityToDTO()));
 
-
         response.setData(accountDTO);
         return response;
-    }
-
-    @GetMapping("/{id}")
-    public Optional<Account> findById(@PathVariable Long id) {
-        return accountService.findById(id);
     }
 
 
