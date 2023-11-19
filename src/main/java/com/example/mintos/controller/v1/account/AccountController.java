@@ -16,8 +16,12 @@ import java.util.Optional;
 @RequestMapping("/accounts")
 public class AccountController {
 
+    private final AccountService accountService;
+
     @Autowired
-    private AccountService accountService;
+    public AccountController(AccountService transactionService) {
+        this.accountService = transactionService;
+    }
 
     @GetMapping
     public Response<List<AccountDTO>> findAll() {

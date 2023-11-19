@@ -11,8 +11,12 @@ import java.util.Optional;
 @Service
 public class AccountService {
 
+    private final AccountRepository repository;
+
     @Autowired
-    private AccountRepository repository;
+    public AccountService(AccountRepository repository) {
+        this.repository = repository;
+    }
 
     public List<Account> findAll() {
         return repository.findAll();

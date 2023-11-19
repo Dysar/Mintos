@@ -16,8 +16,12 @@ import java.math.BigDecimal;
 @RequestMapping("/transactions")
 public class TransactionController {
 
+    private final TransactionService transactionService;
+
     @Autowired
-    private TransactionService transactionService;
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
 
     @PostMapping("/create")
     public ResponseEntity<String> createTransaction(

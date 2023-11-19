@@ -18,12 +18,19 @@ import java.util.Optional;
 @Service
 public class TransactionService {
 
-    //TODO: avoid field injection
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
+    private final AccountRepository accountRepository;
+    private final ExchangeRateService exchangeRateService;
 
     @Autowired
-    private AccountRepository accountRepository;
+    public TransactionService(
+            TransactionRepository transactionRepository,
+            AccountRepository accountRepository,
+            ExchangeRateService exchangeRateService) {
+        this.transactionRepository = transactionRepository;
+        this.accountRepository = accountRepository;
+        this.exchangeRateService = exchangeRateService;
+    }
     public List<Transaction> findBySourceAccountIDOrDestinationAccountIDEquals(Long accountID) {
         return transactionRepository.findBySourceAccountIDOrDestinationAccountIDEquals(accountID, accountID);
     }
@@ -39,12 +46,17 @@ public class TransactionService {
         Account sourceAccount = optionalSourceAccount.orElseThrow(() ->
                 new AccountNotFoundException("Source account not found for ID: " + sourceAccountId));
 
+        Optional<Account> optionalDestinationAccount = accountRepository.findById(destinationAccountId);
+        Account destAccount = optionalDestinationAccount.orElseThrow(() ->
+                new AccountNotFoundException("Destination account not found for ID: " + destinationAccountId));
+
 
         if (sourceAccount.getBalance().subtract(amount).signum() < 0) {
             throw new NegativeBalanceException("Balance cannot be less than zero.");
         }
 
         //TODO: get the exchange rate and convert the currency
+        BigDecimal rate = exchangeRateService.getExchangeRate(sourceAccount.getCurrencyCode(), destAccount.getCurrencyCode());
 
 
         Transaction newTransaction = new Transaction();
@@ -53,7 +65,9 @@ public class TransactionService {
         newTransaction.setTimestamp(Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime());
         // set the currency to the receiver's currency
         newTransaction.setCurrencyCode(sourceAccount.getCurrencyCode());
-        newTransaction.setAmount(amount);
+        if (rate != null) {
+            newTransaction.setAmount(amount);
+        }
 
         //update the source account's balance, update the dest account's balance
         accountRepository.decreaseBalance(sourceAccountId, amount);
