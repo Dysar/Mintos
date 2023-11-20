@@ -34,6 +34,7 @@ public class TransactionService {
         this.accountRepository = accountRepository;
         this.exchangeRateService = exchangeRateService;
     }
+    //TODO: last transactions come first, “offset” and “limit”
     public List<Transaction> findBySourceAccountIDOrDestinationAccountIDEquals(Long accountID) {
         return transactionRepository.findBySourceAccountIDOrDestinationAccountIDEquals(accountID, accountID);
     }

@@ -7,5 +7,6 @@
     <include file="classpath:db/changelog/db-changelog-create_account_table-1.0.sql"/>
     <include file="classpath:db/changelog/db-changelog-create_transaction_table-1.0.sql"/>
     <include file="classpath:db/changelog/db-changelog-insert_accounts-1.0.sql"/>
+    <include file="classpath:db/changelog/db-changelog-create_exchange_rate_table-1.0.sql"/>
 
 </databaseChangeLog>
