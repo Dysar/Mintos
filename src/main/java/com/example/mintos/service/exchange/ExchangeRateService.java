@@ -26,6 +26,8 @@ public class ExchangeRateService {
         //this.restTemplate = restTemplate;
     }
 
+    //TODO: add caching. request the exchange rates and use them until newer ones are fetched
+
     public BigDecimal getExchangeRate(String targetCurrency) {
         // Build the API URL with the necessary query parameters
         ResponseEntity<Map> response = makeApiCall(targetCurrency);
