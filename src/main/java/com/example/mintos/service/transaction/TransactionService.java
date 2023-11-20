@@ -72,7 +72,7 @@ public class TransactionService {
         newTransaction.setDestinationAccountID(destinationAccountId);
         newTransaction.setTimestamp(Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime());
         // set the currency to the receiver's currency
-        newTransaction.setCurrencyCode(sourceAccount.getCurrencyCode());
+        newTransaction.setCurrencyCode(destAccount.getCurrencyCode());
         // multiply the source account's amount by the current rate
         newTransaction.setAmount(amount.multiply(rate));
 

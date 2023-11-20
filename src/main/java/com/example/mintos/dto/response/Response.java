@@ -16,9 +16,9 @@ public class Response<T> {
 	private Object errors;
 
     public void addErrorMsgToResponse(String msgError) {
-        ResponseError error = new ResponseError();
-//        		.setDetails(msgError)
-//                .setTimestamp(LocalDateTime.now());
-//        setErrors(error);
+        ResponseError error = new ResponseError()
+                .setDetails(msgError)
+                .setTimestamp(LocalDateTime.now());
+        setErrors(error);
     }
 }

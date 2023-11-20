@@ -1,7 +1,9 @@
 package com.example.mintos.model.transaction;
 
+import com.example.mintos.dto.model.transaction.TransactionDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -25,4 +27,8 @@ public class Transaction implements Serializable {
     private LocalDateTime timestamp;
     private String currencyCode;
     private BigDecimal amount;
+
+    public TransactionDTO convertEntityToDTO() {
+        return new ModelMapper().map(this, TransactionDTO.class);
+    }
 }
