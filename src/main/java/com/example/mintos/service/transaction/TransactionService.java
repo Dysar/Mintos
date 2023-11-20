@@ -6,6 +6,8 @@ import com.example.mintos.model.account.Account;
 import com.example.mintos.model.transaction.Transaction;
 import com.example.mintos.repository.account.AccountRepository;
 import com.example.mintos.repository.transaction.TransactionRepository;
+import com.example.mintos.service.exchange.ExchangeRateService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,7 @@ public class TransactionService {
         return transactionRepository.findBySourceAccountIDOrDestinationAccountIDEquals(accountID, accountID);
     }
 
+    @Transactional
     public Transaction createTransaction(
             Long sourceAccountId,
             Long destinationAccountId,
@@ -62,6 +65,7 @@ public class TransactionService {
         if (rate == null) {
             throw new CurrencyRateNotFoundException("Could not fetch the currency rate for the transaction.");
         }
+        System.out.println(rate);
 
         Transaction newTransaction = new Transaction();
         newTransaction.setSourceAccountID(sourceAccountId);
@@ -75,7 +79,7 @@ public class TransactionService {
 
         //update the source account's balance, update the dest account's balance
         accountRepository.decreaseBalance(sourceAccountId, amount);
-        accountRepository.increaseBalance(destinationAccountId, amount);
+        accountRepository.increaseBalance(destinationAccountId, amount.multiply(rate));
 
         return transactionRepository.save(newTransaction);
     }

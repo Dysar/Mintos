@@ -1,4 +1,4 @@
-package com.example.mintos.service.transaction;
+package com.example.mintos.service.exchange;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +12,19 @@ import java.util.Map;
 @Service
 public class ExchangeRateService {
 
-    @Value("${api.key}")
-    private String apiKey;
-    @Value("${api.url}")
-    private String apiUrl;
+    private final String apiKey;
+    private final String apiUrl;
+   // private final RestTemplate restTemplate;
+
+    public ExchangeRateService(
+            @Value("${api.key}") String apiKey,
+            @Value("${api.url}") String apiUrl
+          //  RestTemplate restTemplate
+    ) {
+        this.apiKey = apiKey;
+        this.apiUrl = apiUrl;
+        //this.restTemplate = restTemplate;
+    }
 
     public BigDecimal getExchangeRate(String targetCurrency) {
         // Build the API URL with the necessary query parameters
