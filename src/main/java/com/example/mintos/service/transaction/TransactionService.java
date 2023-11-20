@@ -1,5 +1,6 @@
 package com.example.mintos.service.transaction;
 
+import com.example.mintos.exception.CurrencyRateNotFoundException;
 import com.example.mintos.exception.NegativeBalanceException;
 import com.example.mintos.model.account.Account;
 import com.example.mintos.model.transaction.Transaction;
@@ -38,8 +39,9 @@ public class TransactionService {
     public Transaction createTransaction(
             Long sourceAccountId,
             Long destinationAccountId,
+            // the amount is presented in the source account currency
             BigDecimal amount
-            ) throws AccountNotFoundException, NegativeBalanceException {
+    ) throws AccountNotFoundException, NegativeBalanceException, CurrencyRateNotFoundException {
 
 
         Optional<Account> optionalSourceAccount = accountRepository.findById(sourceAccountId);
@@ -55,9 +57,11 @@ public class TransactionService {
             throw new NegativeBalanceException("Balance cannot be less than zero.");
         }
 
-        //TODO: get the exchange rate and convert the currency
-        BigDecimal rate = exchangeRateService.getExchangeRate(sourceAccount.getCurrencyCode(), destAccount.getCurrencyCode());
-
+        // get the exchange rate and convert the currency
+        BigDecimal rate = exchangeRateService.getExchangeRate(destAccount.getCurrencyCode());
+        if (rate == null) {
+            throw new CurrencyRateNotFoundException("Could not fetch the currency rate for the transaction.");
+        }
 
         Transaction newTransaction = new Transaction();
         newTransaction.setSourceAccountID(sourceAccountId);
@@ -65,9 +69,9 @@ public class TransactionService {
         newTransaction.setTimestamp(Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime());
         // set the currency to the receiver's currency
         newTransaction.setCurrencyCode(sourceAccount.getCurrencyCode());
-        if (rate != null) {
-            newTransaction.setAmount(amount);
-        }
+        // multiply the source account's amount by the current rate
+        newTransaction.setAmount(amount.multiply(rate));
+
 
         //update the source account's balance, update the dest account's balance
         accountRepository.decreaseBalance(sourceAccountId, amount);

@@ -17,10 +17,32 @@ public class ExchangeRateService {
     @Value("${api.url}")
     private String apiUrl;
 
-    public BigDecimal getExchangeRate(String baseCurrency, String targetCurrency) {
+    public BigDecimal getExchangeRate(String targetCurrency) {
         // Build the API URL with the necessary query parameters
-        String url = String.format("%s?from=%s&to=%s&apiKey=%s", apiUrl, baseCurrency,targetCurrency, apiKey);
+        ResponseEntity<Map> response = makeApiCall(targetCurrency);
 
+        // Check if the request was successful
+        if (response.getStatusCode().is2xxSuccessful()) {
+            // Parse the response and extract the exchange rate
+            Map<String, Object> responseBody = response.getBody();
+            if (responseBody != null && responseBody.containsKey("rates")) {
+                Map<String, Object> ratesMap = (Map<String, Object>) responseBody.get("rates");
+
+                // Check if the ratesMap has the "GBP" field
+                if (ratesMap != null && ratesMap.containsKey(targetCurrency)) {
+                    return new BigDecimal((Double) ratesMap.get(targetCurrency));
+                }
+            }
+        }
+
+        // If the request fails or the exchange rate is not found, return null
+        return null;
+    }
+
+    private ResponseEntity<Map> makeApiCall(String targetCurrency) {
+        String url = String.format("%s?base=EUR&symbols=%s&access_key=%s", apiUrl, targetCurrency, apiKey);
+
+        System.out.println(url);
         // Create a RetryTemplate for retrying the HTTP request
         RetryTemplate retryTemplate = new RetryTemplate();
 
@@ -32,19 +54,8 @@ public class ExchangeRateService {
                 return execution.execute(request, body);
             });
 
-            return restTemplate.getForEntity(apiUrl, Map.class);
+            return restTemplate.getForEntity(url, Map.class);
         });
-
-        // Check if the request was successful
-        if (response.getStatusCode().is2xxSuccessful()) {
-            // Parse the response and extract the exchange rate
-            Map<String, Object> responseBody = response.getBody();
-            if (responseBody != null && responseBody.containsKey("result")) {
-                return (BigDecimal) responseBody.get("result");
-            }
-        }
-
-        // If the request fails or the exchange rate is not found, return null or handle accordingly
-        return null;
+        return response;
     }
 }

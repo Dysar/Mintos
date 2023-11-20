@@ -1,5 +1,6 @@
 package com.example.mintos.controller.v1.transaction;
 
+import com.example.mintos.exception.CurrencyRateNotFoundException;
 import com.example.mintos.exception.NegativeBalanceException;
 import com.example.mintos.service.transaction.TransactionService;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import javax.security.auth.login.AccountNotFoundException;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping("/v1/transactions")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -32,7 +33,7 @@ public class TransactionController {
         try {
             transactionService.createTransaction(sourceAccountId, destinationAccountId, amount);
             return ResponseEntity.created(null).body("Transaction created successfully");
-        } catch (AccountNotFoundException | NegativeBalanceException e) {
+        } catch (AccountNotFoundException | NegativeBalanceException | CurrencyRateNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
