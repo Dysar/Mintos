@@ -13,7 +13,7 @@ public class TransactionDTOTest {
         TransactionDTO transactionDTO = new TransactionDTO();
 
         // Set values using setters
-        transactionDTO.setTransactionId(1L);
+        transactionDTO.setId(1L);
         transactionDTO.setSourceAccountID(2L);
         transactionDTO.setDestinationAccountID(3L);
         transactionDTO.setTimestamp(LocalDateTime.now());
@@ -21,7 +21,7 @@ public class TransactionDTOTest {
         transactionDTO.setAmount(BigDecimal.valueOf(50.00));
 
         // Verify values using getters
-        assertEquals(1L, transactionDTO.getTransactionId());
+        assertEquals(1L, transactionDTO.getId());
         assertEquals(2L, transactionDTO.getSourceAccountID());
         assertEquals(3L, transactionDTO.getDestinationAccountID());
         assertNotNull(transactionDTO.getTimestamp());
@@ -38,7 +38,7 @@ public class TransactionDTOTest {
         assertNotNull(transactionDTO);
 
         // Verify that the default values are set (assuming default values are meaningful)
-        assertNull(transactionDTO.getTransactionId());
+        assertNull(transactionDTO.getId());
         assertNull(transactionDTO.getSourceAccountID());
         assertNull(transactionDTO.getDestinationAccountID());
         assertNull(transactionDTO.getTimestamp());
@@ -55,7 +55,7 @@ public class TransactionDTOTest {
         assertNotNull(transactionDTO);
 
         // Verify that values are set correctly
-        assertEquals(1L, transactionDTO.getTransactionId());
+        assertEquals(1L, transactionDTO.getId());
         assertEquals(2L, transactionDTO.getSourceAccountID());
         assertEquals(3L, transactionDTO.getDestinationAccountID());
         assertNotNull(transactionDTO.getTimestamp());

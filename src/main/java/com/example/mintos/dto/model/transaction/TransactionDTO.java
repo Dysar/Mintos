@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TransactionDTO extends RepresentationModel<TransactionDTO> {
 
-    private Long transactionId;
+    private Long id;
     private Long sourceAccountID;
     private Long destinationAccountID;
     private LocalDateTime timestamp;

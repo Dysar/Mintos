@@ -21,7 +21,7 @@ public class Transaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long transactionId;
+    private Long id;
     private Long sourceAccountID;
     private Long destinationAccountID;
     private LocalDateTime timestamp;
