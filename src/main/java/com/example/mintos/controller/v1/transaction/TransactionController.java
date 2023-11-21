@@ -7,6 +7,9 @@ import com.example.mintos.exception.NegativeBalanceException;
 import com.example.mintos.model.transaction.Transaction;
 import com.example.mintos.service.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,13 +44,17 @@ public class TransactionController {
     }
 
     @GetMapping("/history/{accountID}")
-    public ResponseEntity<Response<List<TransactionDTO>>> getTransactionHistory(@PathVariable Long accountID) {
+    public ResponseEntity<Response<List<TransactionDTO>>> getTransactionHistory(
+            @PathVariable Long accountID,
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "10") int limit) {
         Response<List<TransactionDTO>> response = new Response<>();
         try {
-            List<Transaction> transactionHistory = transactionService.findBySourceAccountIDOrDestinationAccountIDEquals(accountID);
+            Pageable pageable = PageRequest.of(offset / limit, limit);
+            Page<Transaction> transactionHistory = transactionService.findBySourceAccountIDOrDestinationAccountIDEquals(accountID, pageable);
             List<TransactionDTO> transactionHistoryDTO = new ArrayList<>();
+            transactionHistory.stream().forEach(t -> transactionHistoryDTO.add(t.convertEntityToDTO()));
 
-            transactionHistory.forEach(t -> transactionHistoryDTO.add(t.convertEntityToDTO()));
             response.setData(transactionHistoryDTO);
             return ResponseEntity.status(200).body(response);
         } catch (RuntimeException e) {

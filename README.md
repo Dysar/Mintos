@@ -15,3 +15,9 @@ Using Liquibase for the DB schema versioning should be implemented
 
 How to run
 create database called mintos
+
+
+Transaction history:
+Note: offset does not work without the limit parameter.
+If you have two transactions, I pass offset = 1, limit = 1 to get the older one
+and just limit=1 or with offset=0 to get the newer one

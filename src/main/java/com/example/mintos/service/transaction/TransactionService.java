@@ -9,6 +9,8 @@ import com.example.mintos.repository.transaction.TransactionRepository;
 import com.example.mintos.service.exchange.ExchangeRateService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountNotFoundException;
@@ -34,9 +36,10 @@ public class TransactionService {
         this.accountRepository = accountRepository;
         this.exchangeRateService = exchangeRateService;
     }
+
     //TODO: last transactions come first, “offset” and “limit”
-    public List<Transaction> findBySourceAccountIDOrDestinationAccountIDEquals(Long accountID) {
-        return transactionRepository.findBySourceAccountIDOrDestinationAccountIDEquals(accountID, accountID);
+    public Page<Transaction> findBySourceAccountIDOrDestinationAccountIDEquals(Long accountID, Pageable pageable) {
+        return transactionRepository.findBySourceAccountIDOrDestinationAccountIDEqualsOrderByTimestampDesc(accountID, accountID, pageable);
     }
 
     @Transactional
