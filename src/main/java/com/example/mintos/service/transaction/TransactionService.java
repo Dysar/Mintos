@@ -37,10 +37,28 @@ public class TransactionService {
         this.exchangeRateService = exchangeRateService;
     }
 
+    /**
+     * Retrieves a page of transactions based on source or destination account ID.
+     *
+     * @param accountID The source or destination account ID
+     * @param pageable  The pageable information for pagination
+     * @return Page of transactions matching the criteria
+     */
     public Page<Transaction> findBySourceAccountIDOrDestinationAccountIDEquals(Long accountID, Pageable pageable) {
         return transactionRepository.findBySourceAccountIDOrDestinationAccountIDEqualsOrderByTimestampDesc(accountID, accountID, pageable);
     }
 
+    /**
+     * Creates a new transaction, updating source and destination account balances.
+     *
+     * @param sourceAccountId      The ID of the source account
+     * @param destinationAccountId The ID of the destination account
+     * @param amount               The amount to transfer (in source account currency)
+     * @return The created transaction
+     * @throws AccountNotFoundException      If source or destination account is not found
+     * @throws NegativeBalanceException        If the source account has insufficient balance
+     * @throws CurrencyRateNotFoundException  If the currency rate for the transaction is not found
+     */
     @Transactional
     public Transaction createTransaction(
             Long sourceAccountId,

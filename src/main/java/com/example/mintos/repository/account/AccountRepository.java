@@ -11,18 +11,39 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
-// Spring Data JPA creates CRUD implementation at runtime automatically.
+/**
+ * Repository interface for managing {@link Account} entities in the database.
+ */
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
+   /**
+    * Retrieves a list of accounts based on the client ID.
+    *
+    * @param clientID The client ID to search for
+    * @return List of accounts matching the client ID
+    */
    List<Account> findByClientIDEquals(Long clientID);
 
-   // Method to update the balance
+   /**
+    * Method to update the balance by increasing it.
+    *
+    * @param accountId   The ID of the account to update
+    * @param newBalance  The new balance to set
+    * @return The number of affected rows
+    */
    @Transactional
    @Modifying
    @Query("UPDATE Account a SET a.balance = a.balance + :newBalance WHERE a.id = :accountId")
    int increaseBalance(@Param("accountId") Long accountId, @Param("newBalance") BigDecimal newBalance);
 
+   /**
+    * Method to update the balance by decreasing it.
+    *
+    * @param accountId   The ID of the account to update
+    * @param newBalance  The new balance to set
+    * @return The number of affected rows
+    */
    @Transactional
    @Modifying
    @Query("UPDATE Account a SET a.balance = a.balance - :newBalance WHERE a.id = :accountId")

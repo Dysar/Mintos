@@ -29,6 +29,14 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
+    /**
+     * Create a new transaction.
+     *
+     * @param sourceAccountId      The ID of the source account
+     * @param destinationAccountId The ID of the destination account
+     * @param amount               The transaction amount
+     * @return ResponseEntity with a success or error message
+     */
     @PostMapping("/create")
     public ResponseEntity<String> createTransaction(
             @RequestParam Long sourceAccountId,
@@ -43,6 +51,14 @@ public class TransactionController {
         }
     }
 
+    /**
+     * Get transaction history for a specific account.
+     *
+     * @param accountID The ID of the account
+     * @param offset    The offset for paging
+     * @param limit     The limit for paging
+     * @return ResponseEntity with a list of TransactionDTOs or an error message
+     */
     @GetMapping("/history/{accountID}")
     public ResponseEntity<Response<List<TransactionDTO>>> getTransactionHistory(
             @PathVariable Long accountID,

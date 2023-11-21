@@ -4,7 +4,6 @@ Things to finish:
 * Test coverage
 * [WIP] caching of the exchange rates
 * moving the API key to a secure place
-* commenting the code
 
 Implemented web service should be resilient to 3rd party service unavailability:
 1. Using RetryTemplate to retry the Exchange Rate API request for 5 times 
@@ -39,3 +38,5 @@ Path: GET /v1/accounts/find/clientID/{clientID}
 ### Extra call: get list of all accounts
 
 Path: GET /v1/accounts
+
+

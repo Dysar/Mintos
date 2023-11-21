@@ -26,6 +26,11 @@ public class AccountController {
         this.accountService = transactionService;
     }
 
+    /**
+     * Retrieve all accounts in the API.
+     *
+     * @return Response containing a list of AccountDTOs
+     */
     @GetMapping
     @ApiOperation(value = "Route to find all accounts in the API")
     public Response<List<AccountDTO>> findAll() {
@@ -33,13 +38,19 @@ public class AccountController {
         List<Account> accounts = accountService.findAll();
         List<AccountDTO> accountDTO = new ArrayList<>();
 
+        // Convert each Account entity to DTO
         accounts.forEach(t -> accountDTO.add(t.convertEntityToDTO()));
 
         response.setData(accountDTO);
         return response;
     }
 
-
+    /**
+     * Retrieve accounts by client ID.
+     *
+     * @param clientID The client ID to filter accounts
+     * @return List of accounts matching the client ID
+     */
     @GetMapping("/find/clientID/{clientID}")
     public List<Account> findByClientIDEquals(
             @PathVariable Long clientID) {

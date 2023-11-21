@@ -18,11 +18,21 @@ public class AccountService {
         this.repository = repository;
     }
 
+    /**
+     * Retrieves all accounts from the repository.
+     *
+     * @return List of all accounts
+     */
     public List<Account> findAll() {
         return repository.findAll();
     }
 
-
+    /**
+     * Retrieves accounts based on the provided client ID.
+     *
+     * @param clientID The client ID to filter accounts
+     * @return List of accounts matching the client ID
+     */
     public List<Account> findByClientIDEquals(Long clientID) {
         return repository.findByClientIDEquals(clientID);
     }
