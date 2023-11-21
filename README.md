@@ -4,6 +4,7 @@ Things to finish:
 * Test coverage
 * caching of the exchange rates
 * moving the API key to a secure place
+* commenting the code
 
 Implemented web service should be resilient to 3rd party service unavailability:
 1. Using RetryTemplate to retry the Exchange Rate API request for 5 times 
