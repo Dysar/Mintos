@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "9ec8427c-7116-4c2a-93ba-a4762decc546",
+		"name": "Mintos Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6426662"
+	},
+	"item": [
+		{
+			"name": "Get transaction history",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/v1/transactions/history/2?offset=1&limit=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"transactions",
+						"history",
+						"2"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create transaction (make a transfer)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/v1/transactions/create?sourceAccountId=2&destinationAccountId=4&amount=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"transactions",
+						"create"
+					],
+					"query": [
+						{
+							"key": "sourceAccountId",
+							"value": "2"
+						},
+						{
+							"key": "destinationAccountId",
+							"value": "4"
+						},
+						{
+							"key": "amount",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get list of accounts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/v1/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find an account by client ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/v1/accounts/find/clientID/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"accounts",
+						"find",
+						"clientID",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -37,7 +37,6 @@ public class TransactionService {
         this.exchangeRateService = exchangeRateService;
     }
 
-    //TODO: last transactions come first, “offset” and “limit”
     public Page<Transaction> findBySourceAccountIDOrDestinationAccountIDEquals(Long accountID, Pageable pageable) {
         return transactionRepository.findBySourceAccountIDOrDestinationAccountIDEqualsOrderByTimestampDesc(accountID, accountID, pageable);
     }
