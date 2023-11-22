@@ -3,14 +3,17 @@ package com.example.mintos.service.exchange;
 import com.example.mintos.model.exchange.ExchangeRate;
 import com.example.mintos.repository.exchange.ExchangeRateRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +39,6 @@ public class ExchangeRateService {
         this.exchangeRateRepository = exchangeRateRepository;
     }
 
-    //TODO: add caching. request the exchange rates and use them until newer ones are fetched
-
     public BigDecimal getExchangeRate(String targetCurrency) {
 
         // Build the API URL with the necessary query parameters
@@ -59,7 +60,6 @@ public class ExchangeRateService {
         } else {
             // it's best to use the newest exchange rate. But if the API is unavailable, use the cached exchange rates from the database
             return getTargetCurrencyRateFromDb(targetCurrency);
-
         }
 
         // If the request fails or the exchange rate is not found, return null
@@ -82,48 +82,50 @@ public class ExchangeRateService {
         requestFactory.setConnectTimeout(5000); // 5 seconds connect timeout
         requestFactory.setReadTimeout(5000);    // 5 seconds read timeout
 
-        // Make the HTTP request
-        ResponseEntity<Map> response = retryTemplate.execute(context -> {
-            RestTemplate restTemplate = new RestTemplate();
-            restTemplate.setRequestFactory(requestFactory);
-            restTemplate.getInterceptors().add((request, body, execution) -> {
-                request.getHeaders().add("Accept", "application/json");
-                return execution.execute(request, body);
+        try {
+            // Make the HTTP request
+            ResponseEntity<Map> response = retryTemplate.execute(context -> {
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.setRequestFactory(requestFactory);
+                restTemplate.getInterceptors().add((request, body, execution) -> {
+                    request.getHeaders().add("Accept", "application/json");
+                    return execution.execute(request, body);
+                });
+
+                return restTemplate.getForEntity(url, Map.class);
             });
 
-            return restTemplate.getForEntity(url, Map.class);
-        });
-        return response;
+            return response;
+        } catch (ResourceAccessException e) {
+            // Handle the case where there's no internet connection
+            System.err.println("No internet connection: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
     }
 
     private void persistExchangeRates(Map<String,Object> ratesMap) {
 
         System.out.println(ratesMap);
         List<ExchangeRate> exchangeRates = new ArrayList<>();
-//
-//        // Iterate over the ratesMap entries
-//        for (Map.Entry<String, Object> entry : ratesMap.entrySet()) {
-//            String currencyCode = entry.getKey();
-//            Object rateValue = null;
-//            if (entry.getValue() instanceof Double) {
-//                  rateValue = entry.getValue();
-//            } else if (entry.getValue() instanceof Integer) {
-//                    rateValue = entry.getValue();
-//            }
-//
-//            // Convert the rateValue to BigDecimal
-//            BigDecimal rate = BigDecimal.valueOf(rateValue.toString());
-//
-//            // Create an entity and add it to the list
-//            ExchangeRate exchangeRate = new ExchangeRate();
-//            exchangeRate.setCurrencyCode(currencyCode);
-//            exchangeRate.setRate(rate);
-//
-//            exchangeRates.add(exchangeRate);
-//        }
-//
-//        // Save all entities to the repository
-//        exchangeRateRepository.saveAll(exchangeRates);
+
+        // Iterate over the ratesMap entries
+        for (Map.Entry<String, Object> entry : ratesMap.entrySet()) {
+            String currencyCode = entry.getKey();
+            BigDecimal rate = null;
+            if (entry.getValue() instanceof Double || entry.getValue() instanceof Integer) {
+                rate = BigDecimal.valueOf(((Number) entry.getValue()).doubleValue());
+            }
+
+            // Create an entity and add it to the list
+            ExchangeRate exchangeRate = new ExchangeRate();
+            exchangeRate.setCurrencyCode(currencyCode);
+            exchangeRate.setRate(rate);
+            exchangeRate.setLastModified(LocalDateTime.now());
+            exchangeRates.add(exchangeRate);
+        }
+
+        // Save all entities to the repository
+        exchangeRateRepository.saveAll(exchangeRates);
     }
 
     private BigDecimal getTargetCurrencyRateFromDb(String targetCurrency) {
