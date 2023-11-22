@@ -9,18 +9,23 @@ Using Liquibase for the DB schema versioning should be implemented
 
 Not finished things:
 * Test coverage (67/80%)
-* moving the API key to a secure place
 
 ## Running the project
-create database called mintos
 
-Run the app with Intellij IDEA 
+1. create database called mintos
+2. create a file under `src/main/resources/secrets.properties` with the following content and replace the placeholder with the https://exchangeratesapi.io API key
 
-or the Maven CLI
+```properties
+api.key=<the API key>
+```
+
+3. Run the app with Intellij IDEA or the Maven CLI
 
 ```bash
 mvn spring-boot:run
 ```
+
+4. Open up the Postman collection or use the http://localhost:8080/ URL in the browser to make the API calls that are listed below.
 
 The application will create the necessary database tables and add sample accounts to the accounts table. 
 It's possible to make transfers only from the EUR accounts as that's the API limitation from the API in use (https://api.exchangerate.host/latest)
