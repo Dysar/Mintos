@@ -22,7 +22,9 @@ public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "source_account_id")
     private Long sourceAccountID;
+    @Column(name = "destination_account_id")
     private Long destinationAccountID;
     private LocalDateTime timestamp;
     private String currencyCode;

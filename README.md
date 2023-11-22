@@ -15,7 +15,16 @@ Using Liquibase for the DB schema versioning should be implemented
 ## Running the project
 create database called mintos
 
-The application will create the necessary database tables and add sample accounts to the accounts table. It's possible to make transfers only from the EUR accounts as that's the API limitation from the API in use (https://api.exchangerate.host/latest)
+Run the app with Intellij IDEA 
+
+or the Maven CLI
+
+```bash
+mvn spring-boot:run
+```
+
+The application will create the necessary database tables and add sample accounts to the accounts table. 
+It's possible to make transfers only from the EUR accounts as that's the API limitation from the API in use (https://api.exchangerate.host/latest)
 
 ## List of API requests
 I've added a Postman collection to the project so that you could easily import the collection to make the API requests.
