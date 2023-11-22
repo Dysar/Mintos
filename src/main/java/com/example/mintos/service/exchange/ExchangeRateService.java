@@ -25,7 +25,7 @@ public class ExchangeRateService {
     private final String apiKey;
     private final String apiUrl;
    // private final RestTemplate restTemplate;
-    private ExchangeRateRepository exchangeRateRepository;
+    private final ExchangeRateRepository exchangeRateRepository;
 
     public ExchangeRateService(
             @Value("${api.key}") String apiKey,
@@ -54,7 +54,7 @@ public class ExchangeRateService {
                 // Check if the ratesMap has the "GBP" field
                 if (ratesMap != null && ratesMap.containsKey(targetCurrency)) {
                     this.persistExchangeRates(ratesMap);
-                    return new BigDecimal((Double) ratesMap.get(targetCurrency));
+                    return BigDecimal.valueOf((Double) ratesMap.get(targetCurrency));
                 }
             }
         } else {
@@ -102,8 +102,7 @@ public class ExchangeRateService {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
-
-    private void persistExchangeRates(Map<String,Object> ratesMap) {
+    private void persistExchangeRates(Map<String, Object> ratesMap) {
 
         System.out.println(ratesMap);
         List<ExchangeRate> exchangeRates = new ArrayList<>();
@@ -127,6 +126,7 @@ public class ExchangeRateService {
         // Save all entities to the repository
         exchangeRateRepository.saveAll(exchangeRates);
     }
+
 
     private BigDecimal getTargetCurrencyRateFromDb(String targetCurrency) {
         Optional<ExchangeRate> optionalExchangeRate = exchangeRateRepository.findByCurrencyCode(targetCurrency);
