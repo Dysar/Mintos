@@ -5,15 +5,15 @@ Non-functional requirements:
    
    ![Test coverage](test_coverage.png)
 2. Implemented web service should be resilient to 3rd party service unavailability:
-   1. Using `RetryTemplate` to retry the Exchange Rate API HTTP requests for 5 times 
-   2. Using timeouts of 5 seconds for the HTTP request to the Exchange Rate API
-   3. Caching - Persisting the exchange rates in case of unavailability of the API to work with the latest available rates
+   1. Used `RetryTemplate` to retry the Exchange Rate API HTTP requests for 5 times 
+   2. Used timeouts of 5 seconds for the HTTP request to the Exchange Rate API
+   3. Caching - implemented persistance of the exchange rates in case of unavailability of the API to work with the latest available rates
 3. DB schema versioning should be implemented - Here I used **Liquibase** to version the database schema.
 
 ## Running the project
 
-1. Create database called mintos
-2. Create a file under `src/main/resources/secrets.properties` with the following content and replace the placeholder with the https://exchangeratesapi.io API key
+1. Create a MySQL/MariaDB database called `mintos` 
+2. Create a file `src/main/resources/secrets.properties` with the following content and replace the placeholder with the https://exchangeratesapi.io API key
 
 ```properties
 api.key=<the API key>
@@ -25,9 +25,9 @@ api.key=<the API key>
 mvn spring-boot:run
 ```
 
-4. Open up the Postman collection or use the http://localhost:8080/ URL in the browser to make the API calls that are listed below.
+4. Open up the Postman collection `Mintos Test.postman_collection.json` or use the http://localhost:8080/ URL in the browser to make the API calls that are listed below.
 
-The application will create the necessary database tables and add sample accounts to the accounts table. 
+The application will create the necessary database tables and add sample accounts and transactions. 
 It's possible to make transfers only from the EUR accounts as that's the API limitation from the API in use (https://api.exchangerate.host/latest)
 
 ## List of API requests
