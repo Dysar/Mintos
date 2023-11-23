@@ -5,7 +5,7 @@ import com.example.mintos.dto.response.Response;
 import com.example.mintos.exception.CurrencyRateNotFoundException;
 import com.example.mintos.exception.NegativeBalanceException;
 import com.example.mintos.model.transaction.Transaction;
-import com.example.mintos.service.transaction.TransactionService;
+import com.example.mintos.service.transaction.impl.TransactionServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 
 public class TransactionControllerTest {
     @Mock
-    private TransactionService transactionService;
+    private TransactionServiceImpl transactionService;
 
     @InjectMocks
     private TransactionController transactionController;

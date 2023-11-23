@@ -22,8 +22,8 @@ public class AccountController {
     private final AccountService accountService;
 
     @Autowired
-    public AccountController(AccountService transactionService) {
-        this.accountService = transactionService;
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     /**

@@ -1,20 +1,15 @@
 package com.example.mintos.repository.transaction;
 import com.example.mintos.model.transaction.Transaction;
-import com.example.mintos.service.transaction.TransactionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 

@@ -3,7 +3,7 @@ package com.example.mintos.controller.v1.account;
 import com.example.mintos.dto.model.account.AccountDTO;
 import com.example.mintos.dto.response.Response;
 import com.example.mintos.model.account.Account;
-import com.example.mintos.service.account.AccountService;
+import com.example.mintos.service.account.impl.AccountServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 class AccountControllerTest {
 
     @Mock
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @InjectMocks
     private AccountController accountController;
