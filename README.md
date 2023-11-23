@@ -36,6 +36,9 @@ I've added a Postman collection to the project so that you could easily import t
 
 Path: `GET /v1/transactions/history/{accountID}`
 
+Given an account identifier, return transaction history (last transactions come first)
+and support result paging using “offset” and “limit” parameters
+
 Note: If you have two transactions, pass `offset = 1`, `limit = 1` to get the older one
 and just `limit=1` or with `offset=0` to get the newer one
 
@@ -43,8 +46,19 @@ and just `limit=1` or with `offset=0` to get the newer one
 
 Path: `POST /v1/transactions/create`
 
+Transfer funds between two accounts indicated by identifiers (Balance will always be positive (>= 0).)
+
+Currency conversion takes place when transferring funds between accounts with
+different currencies
+1. For currency exchange rates, the following service is used: https://api.exchangerate.host
+2. The supported currency limitation is that it's possible to make transfers only from the EUR accounts
+3. The currency of funds in the transfer operation will match the receiver's account currency (e.g. system should return an error when requesting to transfer 30 GBP from a USD account to a EUR account, however transferring 30 GBP from USD to GBP is a valid operation - corresponding amount of USD is exchanged to GBP and credited to GBP account).
+
 ### Find an account by client ID
 Path: `GET /v1/accounts/find/clientID/{clientID}`
+
+Given a client identifier, return a list of accounts (each client might have 0 or more
+accounts with different currencies)
 
 ### Extra call: get list of all accounts
 
