@@ -2,6 +2,7 @@
 
 Non-functional requirements:
 1. Test coverage should be not less than 80% - Got the test coverage to 80% 
+   
    2. ![Test coverage](test_coverage.png)
 2. Implemented web service should be resilient to 3rd party service unavailability:
    1. Using `RetryTemplate` to retry the Exchange Rate API HTTP requests for 5 times 
