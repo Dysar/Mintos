@@ -31,7 +31,6 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     public ExchangeRateServiceImpl(
             @Value("${api.key}") String apiKey,
             @Value("${api.url}") String apiUrl,
-          //  RestTemplate restTemplate
             ExchangeRateRepository exchangeRateRepository
     ) {
         this.apiKey = apiKey;
