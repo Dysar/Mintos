@@ -6,7 +6,8 @@ import com.example.mintos.model.account.Account;
 import com.example.mintos.model.transaction.Transaction;
 import com.example.mintos.repository.account.AccountRepository;
 import com.example.mintos.repository.transaction.TransactionRepository;
-import com.example.mintos.service.exchange.ExchangeRateService;
+import com.example.mintos.service.exchange.impl.ExchangeRateServiceImpl;
+import com.example.mintos.service.transaction.impl.TransactionServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,7 +23,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -35,10 +36,10 @@ public class TransactionServiceTest {
     private AccountRepository accountRepository;
 
     @Mock
-    private ExchangeRateService exchangeRateService;
+    private ExchangeRateServiceImpl exchangeRateService;
 
     @InjectMocks
-    private TransactionService transactionService;
+    private TransactionServiceImpl transactionService;
 
     @Test
     public void findBySourceAccountIDOrDestinationAccountIDEquals() {
@@ -87,4 +88,28 @@ public class TransactionServiceTest {
         verify(transactionRepository, times(1)).save(any(Transaction.class));
 
     }
+
+    @Test
+    public void testCreateTransactionWithAccountNotFoundException() {
+        // Mock data
+        Long sourceAccountId = 1L;
+        Long destinationAccountId = 2L;
+        BigDecimal amount = new BigDecimal("200.00");
+
+        Account sourceAccount = new Account();
+        sourceAccount.setBalance(new BigDecimal("100.00")); // Insufficient balance
+
+        // Mock behavior
+        when(accountRepository.findById(sourceAccountId)).thenReturn(Optional.of(sourceAccount));
+
+        // Call the method and expect NegativeBalanceException
+        assertThrows(AccountNotFoundException.class, () ->
+                transactionService.createTransaction(sourceAccountId, destinationAccountId, amount));
+
+        // Verify interactions
+        verify(accountRepository, never()).decreaseBalance(anyLong(), any());
+        verify(accountRepository, never()).increaseBalance(anyLong(), any());
+        verify(transactionRepository, never()).save(any());
+    }
+
 }

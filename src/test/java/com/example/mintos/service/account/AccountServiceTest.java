@@ -2,6 +2,7 @@ package com.example.mintos.service.account;
 
 import com.example.mintos.model.account.Account;
 import com.example.mintos.repository.account.AccountRepository;
+import com.example.mintos.service.account.impl.AccountServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,7 +22,7 @@ public class AccountServiceTest {
     private AccountRepository repository;
 
     @InjectMocks
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Test
     public void testFindAll() {

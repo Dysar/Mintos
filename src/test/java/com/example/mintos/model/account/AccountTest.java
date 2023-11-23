@@ -25,4 +25,20 @@ class AccountTest {
         assertEquals(account.getBalance(), accountDTO.getBalance());
         assertEquals(account.getCurrencyCode(), accountDTO.getCurrencyCode());
     }
+
+    @Test
+    public void testSetter() {
+        Account yourObject = new Account();
+        yourObject.setCurrencyCode("test");
+
+        assertEquals("test", yourObject.getCurrencyCode());
+    }
+
+    @Test
+    public void testToString() {
+        Account yourObject = new Account();
+        yourObject.setCurrencyCode("test");
+
+        assertEquals("Account(id=null, clientID=null, balance=null, currencyCode=test)", yourObject.toString());
+    }
 }

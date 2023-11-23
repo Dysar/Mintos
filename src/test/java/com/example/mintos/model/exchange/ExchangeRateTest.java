@@ -27,4 +27,20 @@ class ExchangeRateTest {
         assertEquals(currencyCode, exchangeRate.getCurrencyCode());
         assertEquals(lastModified, exchangeRate.getLastModified());
     }
+
+    @Test
+    public void testSetter() {
+        ExchangeRate yourObject = new ExchangeRate();
+        yourObject.setCurrencyCode("test");
+
+        assertEquals("test", yourObject.getCurrencyCode());
+    }
+
+    @Test
+    public void testToString() {
+        ExchangeRate yourObject = new ExchangeRate();
+        yourObject.setCurrencyCode("test");
+
+        assertEquals("ExchangeRate(id=null, rate=null, currencyCode=test, lastModified=null)", yourObject.toString());
+    }
 }
