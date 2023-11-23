@@ -10,8 +10,8 @@ Non-functional requirements:
 
 ## Running the project
 
-1. create database called mintos
-2. create a file under `src/main/resources/secrets.properties` with the following content and replace the placeholder with the https://exchangeratesapi.io API key
+1. Create database called mintos
+2. Create a file under `src/main/resources/secrets.properties` with the following content and replace the placeholder with the https://exchangeratesapi.io API key
 
 ```properties
 api.key=<the API key>
@@ -34,20 +34,20 @@ I've added a Postman collection to the project so that you could easily import t
 
 ### Get Transaction history 
 
-Path: GET /v1/transactions/history/{accountID}
+Path: `GET /v1/transactions/history/{accountID}`
 
-Note: If you have two transactions, pass offset = 1, limit = 1 to get the older one
-and just limit=1 or with offset=0 to get the newer one
+Note: If you have two transactions, pass `offset = 1`, `limit = 1` to get the older one
+and just `limit=1` or with `offset=0` to get the newer one
 
 ### Make a transfer 
 
-Path: POST /v1/transactions/create
+Path: `POST /v1/transactions/create`
 
 ### Find an account by client ID
-Path: GET /v1/accounts/find/clientID/{clientID}
+Path: `GET /v1/accounts/find/clientID/{clientID}`
 
 ### Extra call: get list of all accounts
 
-Path: GET /v1/accounts
+Path: `GET /v1/accounts`
 
 
