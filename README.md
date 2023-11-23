@@ -1,14 +1,12 @@
 # Mintos Test Assignment
 
-Implemented web service should be resilient to 3rd party service unavailability:
-1. Using RetryTemplate to retry the Exchange Rate API request for 5 times 
-2. Using timeouts of 5 seconds for the HTTP request to the Exchange Rate API
-3. Persisting the exchange rates in case of unavailability of the API to work with the latest available rates
-
-Using Liquibase for the DB schema versioning should be implemented
-
-Not finished things:
-* Test coverage (67/80%)
+Non-functional requirements:
+1. Test coverage should be not less than 80% - I was able to cover the code with 64% coverage and that's the only requirement that was unmet. My problem was the @Value annotations that I used in the `ExchangeRateServiceImpl`. I tried multiple approaches but was unable to make the tests set the `@Values` as needed.
+2. Implemented web service should be resilient to 3rd party service unavailability:
+   1. Using `RetryTemplate` to retry the Exchange Rate API HTTP requests for 5 times 
+   2. Using timeouts of 5 seconds for the HTTP request to the Exchange Rate API
+   3. Caching - Persisting the exchange rates in case of unavailability of the API to work with the latest available rates
+3. DB schema versioning should be implemented - Here I used **Liquibase** to version the database schema.
 
 ## Running the project
 
